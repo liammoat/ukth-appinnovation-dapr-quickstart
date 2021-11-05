@@ -172,10 +172,9 @@ The Dapr CLI provides a mechanism to publish messages for testing purposes.
 
 1. Click "Run query". Zipkin will present a list of recent results. Find a trace that is routed by "react-form" and select "Show".
 
+![Zipkin Screenshot](./img/Zipkin.png)
 
-
-
-
+1. Zipkin will render the end-to-end trace. Starting with the React app emitting the event, and ending with the two subscribers processing the it.
 
 #### Cleanup
 
