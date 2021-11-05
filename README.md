@@ -32,12 +32,12 @@ Visit [this](https://docs.dapr.io/developing-applications/building-blocks/pubsub
 
 This quickstart includes one publisher:
 
-- React front-end message generator
+- React front-end message generator [[source](https://github.com/dapr/quickstarts/tree/master/pub-sub/react-form)]
 
 And two subscribers: 
  
-- Node.js subscriber
-- Python subscriber
+- Node.js subscriber [[source](https://github.com/dapr/quickstarts/tree/master/pub-sub/node-subscriber)]
+- Python subscriber [[source](https://github.com/dapr/quickstarts/tree/master/pub-sub/python-subscriber)]
 
 Dapr uses pluggable message buses to enable pub-sub, and delivers messages to subscribers in a [Cloud Events](https://github.com/cloudevents/spec) compliant message envelope. in this case you'll use Redis Streams. The following architecture diagram illustrates how components interconnect locally:
 
