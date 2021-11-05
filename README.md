@@ -153,7 +153,29 @@ The Dapr CLI provides a mechanism to publish messages for testing purposes.
 
 ### Going one step further with observability
 
-1. TODO
+1. Applications launched with `dapr run` will by default reference the config file in `$HOME/.dapr/config.yaml` or `%USERPROFILE%\.dapr\config.yaml`.
+
+    ```yaml
+    apiVersion: dapr.io/v1alpha1
+    kind: Configuration
+    metadata:
+      name: daprConfig
+      namespace: default
+    spec:
+      tracing:
+        samplingRate: "1"
+        zipkin:
+          endpointAddress: "http://localhost:9411/api/v2/spans"
+    ```
+
+1. Open the [ZipKin](https://zipkin.io/) UI. In your codespace, under the text editor, click "Ports". Under the list of ports, find "9411" and open the "Local Address" in a new tab.
+
+1. Click "Run query". Zipkin will present a list of recent results. Find a trace that is routed by "react-form" and select "Show".
+
+
+
+
+
 
 #### Cleanup
 
