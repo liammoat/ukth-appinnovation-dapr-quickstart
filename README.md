@@ -148,6 +148,10 @@ The Dapr CLI provides a mechanism to publish messages for testing purposes.
     curl -s http://localhost:36263/v1.0/invoke/react-form/method/publish -H Content-Type:application/json --data @message_c.json
     ```
 
+### Going one step further with observability
+
+1. TODO
+
 #### Cleanup
 
 1. Get Dapr to stop all the running application:
