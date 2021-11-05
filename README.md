@@ -42,6 +42,122 @@ Dapr uses pluggable message buses to enable pub-sub, and delivers messages to su
 
 ![Architecture Diagram](./img/Local_Architecture_Diagram.png)
 
+### Running Locally
+
+In order to run the pub/sub quickstart locally, each of the microservices need to run with Dapr. Start by running message subscribers. 
+
+#### Run Node message subscriber with Dapr
+
+1. Navigate to Node subscriber directory in your CLI:
+
+    ```bash
+    cd pub-sub
+    cd node-subscriber
+    ```
+
+1. Install dependencies: 
+
+    ```bash
+    npm install
+    ```
+
+1. Run the Node subscriber app with Dapr: 
+
+    ```bash
+    dapr run --app-id node-subscriber --app-port 3000 node app.js
+    ```
+
+    > `app-id` which can be any unique identifier for the microservice. `app-port`, is the port that the Node application is running on. Finally, the command to run the app `node app.js` is passed last.
+
+#### Run Python message subscriber with Dapr
+
+1. Open a new CLI window and navigate to Python subscriber directory in your CLI: 
+
+    ```bash
+    cd pub-sub/python-subscriber
+    ```
+
+1. Install dependencies: 
+
+    ```bash
+    pip3 install -r requirements.txt 
+    ```
+
+1. Run the Python subscriber app with Dapr: 
+
+    ```bash
+    dapr run --app-id python-subscriber --app-port 5000 python3 app.py
+    ```
+
+#### Run the React front end with Dapr
+
+Now, run the React front end with Dapr. The front end will publish different kinds of messages that subscribers will pick up.
+
+1. Open a new CLI window and navigate to the react-form directory:
+
+    ```bash
+    cd pub-sub/react-form
+    ```
+
+1. Run the React front end app with Dapr: 
+
+    ```bash
+    npm run buildclient
+    npm install
+    dapr run --app-id react-form --app-port 8080 npm run start
+    ```
+
+    > This may take a minute, as it downloads dependencies and creates an optimized production build. You'll know that it's done when you see `== APP == Listening on port 8080!` and several Dapr logs.
+
+1. GitHub Codespaces uses port forwarding to give you access to TCP ports running within your codespace. In your codespace, under the text editor, click "Ports".
+
+1. Under the list of ports, find "8080" and open the "Local Address" in a new tab. You should see a form with a dropdown for message type and message text: 
+
+1. Pick a topic, enter some text and fire off a message! Observe the logs coming through your respective Dapr subscriber.
+
+> Note that the Node.js subscriber receives messages of type "A" and "B", while the Python subscriber receives messages of type "A" and "C". Note that logs are showing up in the console window where you ran each one: 
+> ```bash
+> == APP == Listening on port 8080!
+> ```
+
+#### Use the CLI to publish messages to subscribers
+
+The Dapr CLI provides a mechanism to publish messages for testing purposes.
+
+1. Open a new CLI window, use Dapr CLI to publish a message:
+
+    ```bash
+    cd pub-sub
+    dapr publish --publish-app-id react-form --pubsub pubsub --topic A --data-file message_a.json
+    ```
+
+1. **Optional:** Try publishing a message of topic B. You'll notice that only the Node app will receive this message. The same is true for topic 'C' and the python app.
+
+    > **Note:** If you are running in an environment without easy access to a web browser, the following curl commands will simulate a browser request to the node server.
+
+    ```bash
+    curl -s http://localhost:8080/publish -H Content-Type:application/json --data @message_b.json
+    curl -s http://localhost:8080/publish -H Content-Type:application/json --data @message_c.json
+    ```
+
+1. **Optional:** You can also use Dapr's service invocation API to publish messages:
+
+    ```bash
+    curl -s http://localhost:36263/v1.0/invoke/react-form/method/publish -H Content-Type:application/json --data @message_a.json
+    curl -s http://localhost:36263/v1.0/invoke/react-form/method/publish -H Content-Type:application/json --data @message_b.json
+    curl -s http://localhost:36263/v1.0/invoke/react-form/method/publish -H Content-Type:application/json --data @message_c.json
+    ```
+
+#### Cleanup
+
+1. Get Dapr to stop all the running application:
+
+    ```bash
+    dapr stop --app-id node-subscriber
+    dapr stop --app-id python-subscriber
+    dapr stop --app-id react-form
+    ```
+
 ## Acknowledgements
 
 * This demo is based on Dapr's [Pub-Sub quickstart](https://github.com/dapr/quickstarts/tree/v1.4.0/pub-sub).
