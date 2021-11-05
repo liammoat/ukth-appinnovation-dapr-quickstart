@@ -1,4 +1,5 @@
 # Dapr Quickstart
+
 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec tempor sapien nec purus volutpat aliquam. Vivamus pretium dapibus consequat. Vestibulum tempus magna mauris, mattis rutrum elit vehicula ac. Praesent posuere, lectus sed fermentum faucibus, nibh augue lobortis ipsum, at auctor nulla ligula et nisi. Nulla sapien ligula, sagittis id justo sed, laoreet volutpat mi. Morbi ac efficitur libero, ut pulvinar leo. Fusce accumsan ultrices diam, eget viverra ligula bibendum egestas.
 
 * **Date:** 8th November 2021
@@ -24,7 +25,22 @@ For this demo we will be using the Dapr project's [quickstarts](https://github.c
 
 ## Exploring Pub-Sub
 
-1. 
+In this quickstart, you'll create a publisher microservice and two subscriber microservices to demonstrate how Dapr enables a publish-subcribe pattern. The publisher will generate messages of a specific topic, while subscribers will listen for messages of specific topics.
+
+Visit [this](https://docs.dapr.io/developing-applications/building-blocks/pubsub/) link for more information about Dapr and Pub-Sub.
+
+This quickstart includes one publisher:
+
+- React front-end message generator
+
+And two subscribers: 
+ 
+- Node.js subscriber
+- Python subscriber
+
+Dapr uses pluggable message buses to enable pub-sub, and delivers messages to subscribers in a [Cloud Events](https://github.com/cloudevents/spec) compliant message envelope. in this case you'll use Redis Streams. The following architecture diagram illustrates how components interconnect locally:
+
+![Architecture Diagram](./img/Local_Architecture_Diagram.png)
 
 ## Acknowledgements
 
