@@ -1,14 +1,21 @@
-# Dapr Quickstart
+# Hands-on with Dapr Quickstart
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec tempor sapien nec purus volutpat aliquam. Vivamus pretium dapibus consequat. Vestibulum tempus magna mauris, mattis rutrum elit vehicula ac. Praesent posuere, lectus sed fermentum faucibus, nibh augue lobortis ipsum, at auctor nulla ligula et nisi. Nulla sapien ligula, sagittis id justo sed, laoreet volutpat mi. Morbi ac efficitur libero, ut pulvinar leo. Fusce accumsan ultrices diam, eget viverra ligula bibendum egestas.
+The purpose of this repo is to help you quickly get hands-on with Dapr. It is meant to be consumed either through GitHub codespaces or through a local Dev Container. The idea being that everything you need from tooling to runtimes is already included in the Dev Container so it should be as simple as executing a run command.
 
 * **Date:** 8th November 2021
 * **Squad:** Cloud Native
 * **Duration:** 30 minutes
 
-## Getting Started
+## Pre-requisites
 
 For this demo we will be using the Dapr project's [quickstarts](https://github.com/dapr/quickstarts) repo. We'll focus on the [pub-sub](https://github.com/dapr/quickstarts/tree/master/pub-sub) quickstart, which demonstrates how to use Dapr to enable pub-sub applications using Redis as a pub-sub component.
+
+There are two options:
+
+1. [Access to GitHub Codespaces](#getting-started-via-codespaces)
+1. [VS Code + Docker Desktop on Local Machine](#getting-started-via-vs-code-and-local-dev-container)
+
+## Getting Started via Codespaces
 
 1. In a new tab, navigate to https://github.com/dapr/quickstarts.
 
@@ -21,11 +28,21 @@ For this demo we will be using the Dapr project's [quickstarts](https://github.c
     > - Configure this container, and your dev environment as per the provided config. 
     > If you don't have access to GitHub Codespaces, follow the guide [here](./vs-code-locally.md) to get started using [Dev Containers](https://code.visualstudio.com/docs/remote/containers) locally.  
 
-1. Once your Codespace is ready. Open the Terminal and run ```dapr init```. Dapr runs as a sidecar alongside your application, and in self-hosted mode this means it is a process on your local machine. Therefore, initializing Dapr includes fetching the Dapr sidecar binaries and installing them locally. Find out more [here](https://docs.dapr.io/getting-started/install-dapr-selfhost/).
+## Getting Started via VS Code and Local Dev Container
+
+Just an FYI that this process will take some time as it involved downloading a base container image and then buiding a container image using the Dockerfile in the **.devcontainer** folder.
+
+1. Clone the https://github.com/dapr/quickstarts repo to your local machine and then open it in VS Code.
+
+1. Once the repo is cloned and opened up with VS Code on your local machine, you should get a **Reopen in Container** option in the lower right-hand corner of VS Code. In case you missed it, youc an also go to the VS Code **Command Palette** and type in **remote-containers: Reopen in Container**.
+
+![Reopen in Container](img/reopen-in-container.png)
 
 ## Exploring Pub-Sub
 
-In this quickstart, you'll create a publisher microservice and two subscriber microservices to demonstrate how Dapr enables a publish-subcribe pattern. The publisher will generate messages of a specific topic, while subscribers will listen for messages of specific topics.
+We will explore Pub-Sub through a story. Imagine you have an application that needs to publish an event so that one or more subscribers could respond to that event. Those subscribers are independent of one another, are written in different languages, and there is a need to observe how those events flow between all of the services.
+
+Through exploring the steps below you will see how to create a React Form that publishes events to a topic via a simple UI. How two subscribers, one in Node, and one in Python, process those events. Then we will wrap-up by seeing how Dapr ties the flow of those messages together through the power of Open Telemetry.
 
 Visit [this](https://docs.dapr.io/developing-applications/building-blocks/pubsub/) link for more information about Dapr and Pub-Sub.
 
@@ -42,17 +59,24 @@ Dapr uses pluggable message buses to enable pub-sub, and delivers messages to su
 
 ![Architecture Diagram](./img/Local_Architecture_Diagram.png)
 
-### Running Locally
+### Running the Pub-Sub Quickstart
 
-In order to run the pub/sub quickstart locally, each of the microservices need to run with Dapr. Start by running message subscribers. 
+In order to run the pub/sub quickstart locally, each of the microservices need to run with Dapr. This involves initializing Dapr, starting the message subscribers, and then starting the message publisher.
+
+#### Initialize Dapr
+
+1. Once your Codespace or Dev Container is ready. Open the Terminal and run ```dapr init```. Dapr runs as a sidecar alongside your application, and in self-hosted mode this means it is a process on your local machine. Therefore, initializing Dapr includes fetching the Dapr sidecar binaries and installing them locally. Find out more [here](https://docs.dapr.io/getting-started/install-dapr-selfhost/).
+
+    ```bash
+    dapr init
+    ```
 
 #### Run Node message subscriber with Dapr
 
 1. Navigate to Node subscriber directory in your CLI:
 
     ```bash
-    cd pub-sub
-    cd node-subscriber
+    cd pub-sub\node-subscriber
     ```
 
 1. Install dependencies: 
@@ -71,7 +95,7 @@ In order to run the pub/sub quickstart locally, each of the microservices need t
 
 #### Run Python message subscriber with Dapr
 
-1. Open a new CLI window and navigate to Python subscriber directory in your CLI: 
+1. Open a **new** CLI window and navigate to Python subscriber directory in your CLI: 
 
     ```bash
     cd pub-sub/python-subscriber
@@ -91,7 +115,7 @@ In order to run the pub/sub quickstart locally, each of the microservices need t
 
 #### Run the React front end with Dapr
 
-Now, run the React front end with Dapr. The front end will publish different kinds of messages that subscribers will pick up.
+Now, run the React front end with Dapr. The front end has a UI that will help you publish different kinds of messages that subscribers will be able to pick up.
 
 1. Open a new CLI window and navigate to the react-form directory:
 
@@ -104,14 +128,14 @@ Now, run the React front end with Dapr. The front end will publish different kin
     ```bash
     npm run buildclient
     npm install
-    dapr run --app-id react-form --app-port 8080 npm run start
+    dapr run --app-id react-form --app-port 8080 --dapr-http-port 8081 npm run start
     ```
 
     > This may take a minute, as it downloads dependencies and creates an optimized production build. You'll know that it's done when you see `== APP == Listening on port 8080!` and several Dapr logs.
 
-1. GitHub Codespaces uses port forwarding to give you access to TCP ports running within your codespace. In your codespace, under the text editor, click "Ports".
+1. When leveraging Dev Containers there is a port forwarding feature to give you access to TCP ports running within your environment. Go to **Ports** under the text editor.
 
-1. Under the list of ports, find "8080" and open the "Local Address" in a new tab. You should see a form with a dropdown for message type and message text: 
+1. Under the list of ports, find "8080" and open the "Local Address" in a new tab. You should see a form with a dropdown for message type and message text.
 
 1. Pick a topic, enter some text and fire off a message! Observe the logs coming through your respective Dapr subscriber.
 
@@ -131,7 +155,7 @@ The Dapr CLI provides a mechanism to publish messages for testing purposes.
     dapr publish --publish-app-id react-form --pubsub pubsub --topic A --data-file message_a.json
     ```
 
-1. **Optional:** Try publishing a message of topic B. You'll notice that only the Node app will receive this message. The same is true for topic 'C' and the python app.
+1. You can also publish a message directly to the React Form app.
 
     > **Note:** If you are running in an environment without easy access to a web browser, the following curl commands will simulate a browser request to the node server.
 
@@ -140,17 +164,25 @@ The Dapr CLI provides a mechanism to publish messages for testing purposes.
     curl -s http://localhost:8080/publish -H Content-Type:application/json --data @message_c.json
     ```
 
-1. **Optional:** You can also use Dapr's service invocation API to publish messages:
+1. You can also publish a message directly using the Dapr API, **also known as Service Invocation**, and notice the **8081** port number which maps to the --dapr-http-port used above.
 
     ```bash
-    curl -s http://localhost:36263/v1.0/invoke/react-form/method/publish -H Content-Type:application/json --data @message_a.json
-    curl -s http://localhost:36263/v1.0/invoke/react-form/method/publish -H Content-Type:application/json --data @message_b.json
-    curl -s http://localhost:36263/v1.0/invoke/react-form/method/publish -H Content-Type:application/json --data @message_c.json
+    curl -s http://localhost:8081/v1.0/invoke/react-form/method/publish -H Content-Type:application/json --data @message_a.json
+    curl -s http://localhost:8081/v1.0/invoke/react-form/method/publish -H Content-Type:application/json --data @message_b.json
+    curl -s http://localhost:8081/v1.0/invoke/react-form/method/publish -H Content-Type:application/json --data @message_c.json
     ```
 
-### Going one step further with observability
+### Going one step further with Observability
 
-1. TODO
+One of Dapr's building blocks is Telemetry and it uses the Open Telemetry API to do this. As part of the default Dapr initialization a Zipkin pod is created and all Open Telemetry information is forwarded to that Pod. Let's see what this looks like.
+
+1. Under the list of ports, find "9411" and open the "Local Address" in a new tab. You should see the Zipkin dashboard.
+
+![Zipkin UI](img/zipkin.png)
+
+1. Click on the **Run Query** in the top right to see a recent list of traces. Find one that has 3 spans and then click on the **Show** button.
+
+![Zipkin Trace](img/zipkin-trace.png)
 
 #### Cleanup
 
