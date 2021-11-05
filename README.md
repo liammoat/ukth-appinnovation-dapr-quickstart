@@ -113,6 +113,8 @@ Now, run the React front end with Dapr. The front end will publish different kin
 
 1. Under the list of ports, find "8080" and open the "Local Address" in a new tab. You should see a form with a dropdown for message type and message text: 
 
+![Form Screenshot](./img/Form_Screenshot.jpg)
+
 1. Pick a topic, enter some text and fire off a message! Observe the logs coming through your respective Dapr subscriber.
 
 > Note that the Node.js subscriber receives messages of type "A" and "B", while the Python subscriber receives messages of type "A" and "C". Note that logs are showing up in the console window where you ran each one: 
