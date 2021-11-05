@@ -12,6 +12,8 @@ For this demo we will be using the Dapr project's [quickstarts](https://github.c
 
 1. In a new tab, navigate to https://github.com/dapr/quickstarts.
 
+    > If you don't have access to GitHub Codespaces, follow the guide [here](./vs-code-locally.md) to get started using [Dev Containers](https://code.visualstudio.com/docs/remote/containers) locally.  
+
 1. If you would like to jump in right away by using GitHub Codespaces, you can click on "Code" in this repo, select "Codespaces" and click "New Codespace", which will let you get started right away with ```dapr init```.
 
     > GitHub Codespaces will provide you a Visual Studio Code based editor backed by high performance VMs in the cloud. It will take a moment for GitHub to create your dev space. This does the following:
@@ -19,7 +21,6 @@ For this demo we will be using the Dapr project's [quickstarts](https://github.c
     > - Build a container image based on the [Dockerfile](https://github.com/dapr/quickstarts/blob/v1.4.0/.devcontainer/Dockerfile). 
     > - Create a dev container based on [devcontainer.json](https://github.com/dapr/quickstarts/blob/v1.4.0/.devcontainer/devcontainer.json).
     > - Configure this container, and your dev environment as per the provided config. 
-    > If you don't have access to GitHub Codespaces, follow the guide [here](./vs-code-locally.md) to get started using [Dev Containers](https://code.visualstudio.com/docs/remote/containers) locally.  
 
 1. Once your Codespace is ready. Open the Terminal and run ```dapr init```. Dapr runs as a sidecar alongside your application, and in self-hosted mode this means it is a process on your local machine. Therefore, initializing Dapr includes fetching the Dapr sidecar binaries and installing them locally. Find out more [here](https://docs.dapr.io/getting-started/install-dapr-selfhost/).
 
