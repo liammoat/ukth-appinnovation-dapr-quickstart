@@ -47,9 +47,9 @@ Dapr uses pluggable message buses to enable pub-sub, and delivers messages to su
 
 1. **Optional:** It's worth taking a moment to understand how the solution is imlemented using the Dapr [building block](https://docs.dapr.io/developing-applications/building-blocks/pubsub/pubsub-overview/):
 
-* [react-form/server.js](https://github.com/dapr/quickstarts/blob/master/pub-sub/react-form/server.js#L19-L24) - emitting events
-* [node-subscriber/app.js](https://github.com/dapr/quickstarts/blob/master/pub-sub/node-subscriber/app.js#L15-L28) - programmatic event subscription in Node.js
-* [python-subscriber/app.py](https://github.com/dapr/quickstarts/blob/master/pub-sub/python-subscriber/app.py#L15-L18) - programmatic event subscription in Python
+    * [react-form/server.js](https://github.com/dapr/quickstarts/blob/master/pub-sub/react-form/server.js#L19-L24) - emitting events
+    * [node-subscriber/app.js](https://github.com/dapr/quickstarts/blob/master/pub-sub/node-subscriber/app.js#L15-L28) - programmatic event subscription in Node.js
+    * [python-subscriber/app.py](https://github.com/dapr/quickstarts/blob/master/pub-sub/python-subscriber/app.py#L15-L18) - programmatic event subscription in Python
 
 ### Running Locally
 
