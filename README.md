@@ -19,8 +19,6 @@ There are two options:
 
 1. In a new tab, navigate to https://github.com/dapr/quickstarts.
 
-    > If you don't have access to GitHub Codespaces, follow the guide [here](./vs-code-locally.md) to get started using [Dev Containers](https://code.visualstudio.com/docs/remote/containers) locally.  
-
 1. If you would like to jump in right away by using GitHub Codespaces, you can click on "Code" in this repo, select "Codespaces" and click "New Codespace", which will let you get started right away with ```dapr init```.
 
     > GitHub Codespaces will provide you a Visual Studio Code based editor backed by high performance VMs in the cloud. It will take a moment for GitHub to create your dev space. This does the following:
@@ -31,13 +29,13 @@ There are two options:
 
 ## Getting Started via VS Code and Local Dev Container
 
-Just an FYI that this process will take some time as it involved downloading a base container image and then buiding a container image using the Dockerfile in the **.devcontainer** folder.
-
 1. Clone the https://github.com/dapr/quickstarts repo to your local machine and then open it in VS Code.
 
 1. Once the repo is cloned and opened up with VS Code on your local machine, you should get a **Reopen in Container** option in the lower right-hand corner of VS Code. In case you missed it, youc an also go to the VS Code **Command Palette** and type in **remote-containers: Reopen in Container**.
 
-![Reopen in Container](img/reopen-in-container.png)
+    ![Reopen in Container](img/reopen-in-container.png)
+    
+    > Just an FYI that this process will take some time as it involved downloading a base container image and then buiding a container image using the Dockerfile in the **.devcontainer** folder.
 
 ## Exploring Pub-Sub
 
@@ -148,14 +146,14 @@ Now, run the React front end with Dapr. The front end has a UI that will help yo
 
 1. Under the list of ports, find "8080" and open the "Local Address" in a new tab. You should see a form with a dropdown for message type and message text.
 
-![Form Screenshot](./img/Form_Screenshot.jpg)
+    ![Form Screenshot](./img/Form_Screenshot.jpg)
 
 1. Pick a topic, enter some text and fire off a message! Observe the logs coming through your respective Dapr subscriber.
 
-> Note that the Node.js subscriber receives messages of type "A" and "B", while the Python subscriber receives messages of type "A" and "C". Note that logs are showing up in the console window where you ran each one: 
-> ```bash
-> == APP == Listening on port 8080!
-> ```
+    > Note that the Node.js subscriber receives messages of type "A" and "B", while the Python subscriber receives messages of type "A" and "C". Note that logs are showing up in the console window where you ran each one: 
+    > ```bash
+    > == APP == Listening on port 8080!
+    > ```
 
 #### Use the CLI to publish messages to subscribers
 
@@ -189,14 +187,6 @@ The Dapr CLI provides a mechanism to publish messages for testing purposes.
 
 One of Dapr's building blocks is Telemetry and it uses the Open Telemetry API to do this. As part of the default Dapr initialization a Zipkin pod is created and all Open Telemetry information is forwarded to that Pod. Let's see what this looks like.
 
-1. Under the list of ports, find "9411" and open the "Local Address" in a new tab. You should see the Zipkin dashboard.
-
-![Zipkin UI](img/zipkin.png)
-
-1. Click on the **Run Query** in the top right to see a recent list of traces. Find one that has 3 spans and then click on the **Show** button.
-
-![Zipkin Trace](img/zipkin-trace.png)
-
 1. Applications launched with `dapr run` will by default reference the config file in `$HOME/.dapr/config.yaml` or `%USERPROFILE%\.dapr\config.yaml`.
 
     ```yaml
@@ -212,11 +202,13 @@ One of Dapr's building blocks is Telemetry and it uses the Open Telemetry API to
           endpointAddress: "http://localhost:9411/api/v2/spans"
     ```
 
-1. Open the [ZipKin](https://zipkin.io/) UI. In your codespace, under the text editor, click "Ports". Under the list of ports, find "9411" and open the "Local Address" in a new tab.
+1. Open the [ZipKin](https://zipkin.io/) UI. Under the list of ports, find "9411" and open the "Local Address" in a new tab. You should see the Zipkin dashboard.
 
-1. Click "Run query". Zipkin will present a list of recent results. Find a trace that is routed by "react-form" and select "Show".
+    ![Zipkin UI](img/zipkin.png)
 
-![Zipkin Screenshot](./img/Zipkin.png)
+1. Click on the **Run Query** in the top right to see a recent list of traces. Find one that has 3 spans and then click on the **Show** button.
+
+    ![Zipkin Trace](img/zipkin-trace.png)
 
 1. Zipkin will render the end-to-end trace. Starting with the React app emitting the event, and ending with the two subscribers processing the it.
 
