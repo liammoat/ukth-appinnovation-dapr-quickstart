@@ -85,7 +85,7 @@ In order to run the pub/sub quickstart locally, each of the microservices need t
 1. Navigate to Node subscriber directory in your CLI:
 
     ```bash
-    cd pub-sub\node-subscriber
+    cd pub-sub/node-subscriber
     ```
 
 1. Install dependencies: 
@@ -178,6 +178,7 @@ The Dapr CLI provides a mechanism to publish messages for testing purposes.
 1. You can also publish a message directly using the Dapr API, **also known as Service Invocation**, and notice the **8081** port number which maps to the --dapr-http-port used above.
 
     ```bash
+    cd pub-sub
     curl -s http://localhost:8081/v1.0/invoke/react-form/method/publish -H Content-Type:application/json --data @message_a.json
     curl -s http://localhost:8081/v1.0/invoke/react-form/method/publish -H Content-Type:application/json --data @message_b.json
     curl -s http://localhost:8081/v1.0/invoke/react-form/method/publish -H Content-Type:application/json --data @message_c.json
