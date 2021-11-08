@@ -19,6 +19,8 @@ There are two options:
 
 1. In a new tab, navigate to https://github.com/dapr/quickstarts.
 
+    > If you don't have access to GitHub Codespaces, follow the guide [here](./vs-code-locally.md) to get started using [Dev Containers](https://code.visualstudio.com/docs/remote/containers) locally.  
+
 1. If you would like to jump in right away by using GitHub Codespaces, you can click on "Code" in this repo, select "Codespaces" and click "New Codespace", which will let you get started right away with ```dapr init```.
 
     > GitHub Codespaces will provide you a Visual Studio Code based editor backed by high performance VMs in the cloud. It will take a moment for GitHub to create your dev space. This does the following:
@@ -26,7 +28,6 @@ There are two options:
     > - Build a container image based on the [Dockerfile](https://github.com/dapr/quickstarts/blob/v1.4.0/.devcontainer/Dockerfile). 
     > - Create a dev container based on [devcontainer.json](https://github.com/dapr/quickstarts/blob/v1.4.0/.devcontainer/devcontainer.json).
     > - Configure this container, and your dev environment as per the provided config. 
-    > If you don't have access to GitHub Codespaces, follow the guide [here](./vs-code-locally.md) to get started using [Dev Containers](https://code.visualstudio.com/docs/remote/containers) locally.  
 
 ## Getting Started via VS Code and Local Dev Container
 
@@ -48,12 +49,12 @@ Visit [this](https://docs.dapr.io/developing-applications/building-blocks/pubsub
 
 This quickstart includes one publisher:
 
-- React front-end message generator
+- React front-end message generator [[source](https://github.com/dapr/quickstarts/tree/master/pub-sub/react-form)]
 
 And two subscribers: 
  
-- Node.js subscriber
-- Python subscriber
+- Node.js subscriber [[source](https://github.com/dapr/quickstarts/tree/master/pub-sub/node-subscriber)]
+- Python subscriber [[source](https://github.com/dapr/quickstarts/tree/master/pub-sub/python-subscriber)]
 
 Dapr uses pluggable message buses to enable pub-sub, and delivers messages to subscribers in a [Cloud Events](https://github.com/cloudevents/spec) compliant message envelope. in this case you'll use Redis Streams. The following architecture diagram illustrates how components interconnect locally:
 
@@ -62,6 +63,16 @@ Dapr uses pluggable message buses to enable pub-sub, and delivers messages to su
 ### Running the Pub-Sub Quickstart
 
 In order to run the pub/sub quickstart locally, each of the microservices need to run with Dapr. This involves initializing Dapr, starting the message subscribers, and then starting the message publisher.
+
+### Get familiar with the code
+
+1. **Optional:** It's worth taking a moment to understand how the solution is imlemented using the Dapr [building block](https://docs.dapr.io/developing-applications/building-blocks/pubsub/pubsub-overview/):
+
+    * [react-form/server.js](https://github.com/dapr/quickstarts/blob/master/pub-sub/react-form/server.js#L19-L24) - emitting events
+    * [node-subscriber/app.js](https://github.com/dapr/quickstarts/blob/master/pub-sub/node-subscriber/app.js#L15-L28) - programmatic event subscription in Node.js
+    * [python-subscriber/app.py](https://github.com/dapr/quickstarts/blob/master/pub-sub/python-subscriber/app.py#L15-L18) - programmatic event subscription in Python
+
+### Running Locally
 
 #### Initialize Dapr
 
@@ -137,6 +148,8 @@ Now, run the React front end with Dapr. The front end has a UI that will help yo
 
 1. Under the list of ports, find "8080" and open the "Local Address" in a new tab. You should see a form with a dropdown for message type and message text.
 
+![Form Screenshot](./img/Form_Screenshot.jpg)
+
 1. Pick a topic, enter some text and fire off a message! Observe the logs coming through your respective Dapr subscriber.
 
 > Note that the Node.js subscriber receives messages of type "A" and "B", while the Python subscriber receives messages of type "A" and "C". Note that logs are showing up in the console window where you ran each one: 
@@ -183,6 +196,29 @@ One of Dapr's building blocks is Telemetry and it uses the Open Telemetry API to
 1. Click on the **Run Query** in the top right to see a recent list of traces. Find one that has 3 spans and then click on the **Show** button.
 
 ![Zipkin Trace](img/zipkin-trace.png)
+
+1. Applications launched with `dapr run` will by default reference the config file in `$HOME/.dapr/config.yaml` or `%USERPROFILE%\.dapr\config.yaml`.
+
+    ```yaml
+    apiVersion: dapr.io/v1alpha1
+    kind: Configuration
+    metadata:
+      name: daprConfig
+      namespace: default
+    spec:
+      tracing:
+        samplingRate: "1"
+        zipkin:
+          endpointAddress: "http://localhost:9411/api/v2/spans"
+    ```
+
+1. Open the [ZipKin](https://zipkin.io/) UI. In your codespace, under the text editor, click "Ports". Under the list of ports, find "9411" and open the "Local Address" in a new tab.
+
+1. Click "Run query". Zipkin will present a list of recent results. Find a trace that is routed by "react-form" and select "Show".
+
+![Zipkin Screenshot](./img/Zipkin.png)
+
+1. Zipkin will render the end-to-end trace. Starting with the React app emitting the event, and ending with the two subscribers processing the it.
 
 #### Cleanup
 
